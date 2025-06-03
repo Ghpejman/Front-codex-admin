@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shayan MeherSazan Pars | Codexina</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <h1>📁 File Sharing Admin</h1>
+        <div class="navbar-nav">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/user">Users</a>
+          <a href="/admin/code">Repositories</a>
+          <span>Welcome, <%= user.username %></span>
+          <a href="/logout" class="btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="dashboard">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>📂 Repository Management</h2>
+        <button onclick="showCreateRepoModal()" class="btn">Create Repository</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% repositories.forEach(repo => { %>
+            <tr>
+              <td><%= repo.id %></td>
+              <td><%= repo.name %></td>
+              <td><%= repo.description || 'No description' %></td>
+              <td><%= new Date(repo.createdAt).toLocaleDateString() %></td>
+              <td>
+                <a href="/admin/code/info/<%= repo.id %>" class="btn">View Files</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Repository Modal -->
+  <div id="createRepoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="hideCreateRepoModal()">&times;</span>
+      <h3>Create New Repository</h3>
+      <form method="POST" action="/admin/code/create">
+        <div class="form-group">
+          <label for="name">Repository Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; min-height: 100px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Repository</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showCreateRepoModal() {
+      document.getElementById('createRepoModal').style.display = 'block';
+    }
+
+    function hideCreateRepoModal() {
+      document.getElementById('createRepoModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('createRepoModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
