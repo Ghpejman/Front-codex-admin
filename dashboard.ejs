@@ -23,3 +23,48 @@
     </div>
   </nav>
   
+<div class="container">
+    <div class="dashboard">
+      <h2>Admin Dashboard</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3><%= users.filter(u => u.role === 'developer').length %></h3>
+          <p>Developers</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= repositories.length %></h3>
+          <p>Repositories</p>
+        </div>
+        <div class="stat-card">
+          <h3><%= users.length %></h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+        <div>
+          <h3>Recent Developers</h3>
+          <div class="table-responsive">
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Created</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% users.filter(u => u.role === 'developer').slice(0, 5).forEach(dev => { %>
+                <tr>
+                  <td><%= dev.username %></td>
+                  <td><%= new Date(dev.createdAt).toLocaleDateString() %></td>
+                  <td>
+                    <a href="/admin/user/manage/<%= dev.id %>" class="btn">Manage</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+            </table>
+          </div>
+        </div>
