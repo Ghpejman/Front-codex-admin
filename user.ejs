@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shayan MeherSazan Pars | Codexina</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <h1>📁 File Sharing Admin</h1>
+        <div class="navbar-nav">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/user">Users</a>
+          <a href="/admin/code">Repositories</a>
+          <span>Welcome, <%= user.username %></span>
+          <a href="/logout" class="btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="dashboard">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>👥 Developer Management</h2>
+        <button onclick="showCreateUserModal()" class="btn">Create Developer</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(dev => { %>
+            <tr>
+              <td><%= dev.id %></td>
+              <td><%= dev.username %></td>
+              <td><%= new Date(dev.createdAt).toLocaleDateString() %></td>
+              <td>
+                <a href="/admin/user/manage/<%= dev.id %>" class="btn">Manage</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
