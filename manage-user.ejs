@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shayan MeherSazan Pars | Codexina</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <h1>📁 File Sharing Admin</h1>
+        <div class="navbar-nav">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/user">Users</a>
+          <a href="/admin/code">Repositories</a>
+          <span>Welcome, <%= user.username %></span>
+          <a href="/logout" class="btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="dashboard">
+      <div class="breadcrumb">
+        <a href="/admin/user">Users</a> > Manage User
+      </div>
+
+      <h2>👤 User Information</h2>
+      
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <h4>User ID:</h4>
+            <p><%= targetUser.id %></p>
+          </div>
+          <div>
+            <h4>Username:</h4>
+            <p><%= targetUser.username %></p>
+          </div>
+          <div>
+            <h4>Role:</h4>
+            <p style="text-transform: capitalize;"><%= targetUser.role %></p>
+          </div>
+          <div>
+            <h4>Created Date:</h4>
+            <p><%= new Date(targetUser.createdAt).toLocaleDateString() %></p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <div>
+          <h3>User Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>0</h3>
+              <p>Files Uploaded</p>
+            </div>
+            <div class="stat-card">
+              <h3>0</h3>
+              <p>Last Login</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3>User Actions</h3>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn" onclick="resetPassword()">Reset Password</button>
+            <button class="btn" style="background: #dc3545;" onclick="deactivateUser()">Deactivate User</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function resetPassword() {
+      if (confirm('Are you sure you want to reset this user\'s password?')) {
+        alert('Password reset functionality would be implemented here');
+      }
+    }
+
+    function deactivateUser() {
+      if (confirm('Are you sure you want to deactivate this user?')) {
+        alert('User deactivation functionality would be implemented here');
+      }
+    }
+  </script>
+</body>
+</html>

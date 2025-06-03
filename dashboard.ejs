@@ -68,3 +68,34 @@
             </table>
           </div>
         </div>
+
+        <div>
+          <h3>Recent Repositories</h3>
+          <div class="table-responsive">
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% repositories.slice(0, 5).forEach(repo => { %>
+                <tr>
+                  <td><%= repo.name %></td>
+                  <td><%= new Date(repo.createdAt).toLocaleDateString() %></td>
+                  <td>
+                    <a href="/admin/code/info/<%= repo.id %>" class="btn">View</a>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= repository.name %> - Shayan MeherSazan Pars | Codexina</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <h1>📁 File Sharing Admin</h1>
+        <div class="navbar-nav">
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/user">Users</a>
+          <a href="/admin/code">Repositories</a>
+          <span>Welcome, <%= user.username %></span>
+          <a href="/logout" class="btn">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="dashboard">
+      <div class="breadcrumb">
+        <a href="/admin/code">Repositories</a> > 
+        <a href="/admin/code/info/<%= repository.id %>"><%= repository.name %></a>
+        <% if (currentPath) { %>
+          <% const pathParts = currentPath.split('/'); %>
+          <% let buildPath = ''; %>
+          <% pathParts.forEach((part, index) => { %>
+            <% buildPath += (index > 0 ? '/' : '') + part; %>
+            > <a href="/admin/code/info/<%= repository.id %>/<%= buildPath %>"><%= part %></a>
+          <% }); %>
+        <% } %>
+      </div>
+
+      <% if (currentPath) { %>
+        <div style="margin-bottom: 20px;">
+          <% const parentPath = currentPath.split('/').slice(0, -1).join('/'); %>
+          <% if (parentPath) { %>
+            <a href="/admin/code/info/<%= repository.id %>/<%= parentPath %>" class="btn" style="background: #6c757d;">← Back</a>
+          <% } else { %>
+            <a href="/admin/code/info/<%= repository.id %>" class="btn" style="background: #6c757d;">← Back</a>
+          <% } %>
+        </div>
+      <% } %>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <h2>📂 <%= repository.name %></h2>
+          <p style="color: #666;"><%= repository.description || 'No description available' %></p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <% if (files.length > 0) { %>
+            <a href="/admin/download/code/<%= repository.id %>" class="btn" style="background: #007bff;">📥 Download ZIP</a>
+          <% } %>
+          <button onclick="showCreateFolderForm()" class="btn" style="background: #ffc107; color: #000;">📁 Create Folder</button>
+        </div>
+      </div>
+
+      <div id="createFolderForm" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+        <form method="POST" action="/admin/create-folder/<%= repository.id %><%= currentPath ? '?path=' + currentPath : '' %>">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <label for="folderName">Folder Name:</label>
+            <input type="text" id="folderName" name="folderName" required style="padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+            <button type="submit" class="btn" style="background: #28a745;">Create</button>
+            <button type="button" onclick="hideCreateFolderForm()" class="btn" style="background: #6c757d;">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+          <div>
+            <h4>Repository ID:</h4>
+            <p><%= repository.id %></p>
+          </div>
+          <div>
+            <h4>Created Date:</h4>
+            <p><%= new Date(repository.createdAt).toLocaleDateString() %></p>
+          </div>
+          <div>
+            <h4>Total Files:</h4>
+            <p><%= files.length %></p>
+          </div>
+        </div>
+      </div>
+
+      <h3>📄 Repository Files</h3>
+      <% if (files.length === 0) { %>
+        <div style="text-align: center; padding: 40px; color: #666;">
+          <p>No files in this repository yet.</p>
+        </div>
+      <% } else { %>
+        <ul class="file-list">
+          <% files.forEach(file => { %>
+            <li>
+              <div>
+                <% if (file.isDirectory) { %>
+                  <span class="file-icon">📁</span>
+                  <a href="/admin/code/info/<%= repository.id %>/<%= file.name %>" style="text-decoration: none; color: #333;">
+                    <strong><%= file.name %></strong>
+                  </a>
+                <% } else { %>
+                  <span class="file-icon">📄</span>
+                  <%= file.name %>
+                <% } %>
+              </div>
+              <div style="color: #666; font-size: 0.9em;">
+                <% if (!file.isDirectory) { %>
+                  <%= (file.size / 1024).toFixed(1) %> KB
+                <% } %>
+                <%= new Date(file.modified).toLocaleDateString() %>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    function showCreateFolderForm() {
+      document.getElementById('createFolderForm').style.display = 'block';
+    }
+    
+    function hideCreateFolderForm() {
+      document.getElementById('createFolderForm').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
